@@ -291,11 +291,9 @@ class zteRouter:
 
 getsmstime = get_sms_time()
 getsmstimeEncoded = urllib.parse.quote(getsmstime, safe="")
-phoneNumber = '13909'  # enter phone number here
-phoneNumberEncoded = urllib.parse.quote(phoneNumber, safe="")
-message = 'BRZINA'  # enter your message here
-messageEncoded = gsm_encode(message)
-outputmessage = messageEncoded.decode()
+phoneNumber = '13909'  # enter default phone number here
+message = 'BRZINA'  # enter your default message here
+#checks moved to sending ha_select 2
 
 zteInstance = zteRouter("192.168.254.1", "admin","admin")
 ha_select = int(sys.argv[1])
@@ -310,6 +308,18 @@ if ha_select == 1:
     first_message_json = json.dumps(first_message)
     print(first_message_json)
 elif ha_select == 2:
+    arg_counter=0
+    for arg in sys.argv: #parse additional arguments like: zte_tool.py 2 reciepient_number sms_word1 sms_word2
+        if arg_counter == 2 :
+            phoneNumber=arg
+        if arg_counter == 3 :
+            message=arg
+        if arg_counter>3 :
+            message=message+" "+arg
+        arg_counter=arg_counter+1   
+    phoneNumberEncoded = urllib.parse.quote(phoneNumber, safe="")
+    messageEncoded = gsm_encode(message)
+    outputmessage = messageEncoded.decode()
     zteInstance.sendsms()
 elif ha_select == 3:
     time.sleep(3)
