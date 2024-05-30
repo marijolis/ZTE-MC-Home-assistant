@@ -69,6 +69,18 @@ Look in switches configuration...
 
 Automation for send SMS (you can put to ```automations.yaml```): are in repo as yaml with clean and reboot automations
 
+For simple nodered use add shell_command for sending sms and input_text for data/number to configuration.yaml
+"
+input_text:
+  text1:
+    name: Text 1
+    initial: Some test text    
+    
+shell_command: 
+  send_sms: 'python /config/python_scripts/zte_tool.py 2 +123456789 {{states("input_text.text1")}}'
+"
+
+
 
 **UPDATE : modified configuration to support new versions of Home assistant**
 
